@@ -25,10 +25,6 @@ module AmazonProducts
       @small_image ||= @item['asin'].to_s
     end
     
-    def language
-      @item_attributes.languages.language.first.name.to_s
-    end
-    
     def large_image
       @large_image ||= Image.new(@item['large_image'])
     end
@@ -41,13 +37,22 @@ module AmazonProducts
       @small_image ||= Image.new(@item['small_image'])
     end
     
-    def method_missing(method, *args)
-      return super unless @attribute_names.include?(method.to_s)
-      @item_attributes.first.send(method).to_s
-    end
+    protected
+      def method_missing(method, *args)
+        return super unless @attribute_names.include?(method.to_s)
+        @item_attributes.first.send(method).to_s
+      end
   end
   
   class Book < Product
+    def format
+      @item_attributes.first.format
+    end
+    
+    def language
+      @item_attributes.languages.language.first.name.to_s
+    end
+    
     def number_of_items
       number_ofitems
     end
