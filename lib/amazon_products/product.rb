@@ -1,8 +1,19 @@
 module AmazonProducts
+  # Products are just items brought back by an AmazonProduct::Search.
+  #
+  # To find out what methods are available to a particular Product, just
+  # inspect the #attribute_names method. This can be useful since these
+  # attributes change with the type of AmazonProducts::ResponseGroup used. So
+  # a 'Medium' ResponseGroup size will return more attributes than 'Small' and
+  # less than 'Large'.
+  #
   class Product
-    def self.create(item)
-      AmazonProducts.const_get(item['item_attributes'].product_group.to_s).new(item)
+    def self.create(item, search_index)
+      product_group = item.item_attributes.first.product_group.to_s.gsub(' ', '')
+      search_index.match(product_group) ? AmazonProducts.const_get(product_group).new(item) : nil
     end
+    
+    attr_reader :attribute_names
     
     def initialize(item)
       @item = item
@@ -30,43 +41,60 @@ module AmazonProducts
       @small_image ||= Image.new(@item['small_image'])
     end
     
+    def method_missing(method, *args)
+      return super unless @attribute_names.include?(method.to_s)
+      @item_attributes.first.send(method).to_s
+    end
+  end
+  
+  class Book < Product
     def number_of_items
       number_ofitems
     end
     
-    def method_missing(method, *args)
-      return super unless @attribute_names.include?(method.to_s)
-      @item_attributes.first.send(method).first.to_s
-    end
-  end
-  
-  # Some of the methods available to a Book:
-  #
-  # * <tt>:author</tt>
-  # * <tt>:binding</tt> - Values like 'Hardcover' or 'Paperback'
-  # * <tt>:dewey_decimal_number</tt>
-  # * <tt>:ean</tt> - European Article Number, superset of UPC
-  # * <tt>:format</tt> - Values like 'Illustrated'
-  # * <tt>:isbn</tt> - International Standard Book Number
-  # * <tt>:label</tt>
-  # * <tt>:language</tt>
-  # * <tt>:list_price</tt>
-  # * <tt>:manufacturer</tt>
-  # * <tt>:number_of_items</tt>
-  # * <tt>:number_of_pages</tt>
-  # * <tt>:package_dimensions</tt>
-  # * <tt>:product_group</tt> - Should be 'Book'
-  # * <tt>:product_type_name</tt>
-  # * <tt>:publication_date</tt>
-  # * <tt>:publisher</tt>
-  # * <tt>:studio</tt>
-  # * <tt>:title</tt>
-  #
-  class Book < Product
     def number_of_pages
       number_ofpages
     end
   end
+  
+  class Music < Product
+    def number_of_discs
+      number_ofdiscs
+    end
+  end
+  
+  class DVD < Product
+    def actors
+      actor.collect {|name| name.to_s}.join(', ')
+    end
+    
+    # Returns an array of items as such:
+    # 
+    #   [{"Writer"=>"Jared Hess"}, {"Producer"=>"Chris Wyatt"}... ]
+    # 
+    def creators
+      @item_attributes.first.creator.inject([]) {|m,c| m << {c.attrib['role'] => c.to_s}}
+    end
+    
+    # This is a pretty crazy attribute, so this will just be passed through to
+    # do with what you wish
+    def format
+      @item_attributes.first.format
+    end
+    
+    # This is also a pretty crazy attribute, so this will just be passed
+    # through to do with what you wish
+    def languages
+      @item_attributes.first.languages
+    end
+    
+    def number_of_items
+      number_ofitems
+    end
+  end
+  
+  class VideoGame < Product; end
+  VideoGames = VideoGame
   
   class Image
     def initialize(image)
