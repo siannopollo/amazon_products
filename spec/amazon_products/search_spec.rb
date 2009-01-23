@@ -22,19 +22,11 @@ describe AmazonProducts::Search do
     request = Object.new
     AmazonProducts::Request.should_receive(:new).and_return(request)
     request.should_receive(:search)
-    AmazonProducts::SearchResultCollection.should_receive(:new)
     
-    @model.search!
-  end
-end
-
-describe AmazonProducts::SearchResultCollection do
-  before :all do
-    @search = AmazonProducts::Search.new('Books', 'ruby programming', 'Large')
-    @model = @search.search!
-  end
-  
-  it 'should have search results' do
-    @model.size.should > 1
+    collection = Object.new
+    AmazonProducts::SearchResultCollection.should_receive(:new).and_return(collection)
+    
+    returned_collection = @model.search!
+    returned_collection.should == collection
   end
 end

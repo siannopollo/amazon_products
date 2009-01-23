@@ -3,6 +3,7 @@ require 'amazon/aws/search'
 require 'yaml'
 
 require 'amazon_products/search'
+require 'amazon_products/product'
 
 module AmazonProducts
   class << self

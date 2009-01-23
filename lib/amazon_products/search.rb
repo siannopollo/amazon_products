@@ -21,11 +21,14 @@ module AmazonProducts
     
     def initialize(search_response)
       @search_response = search_response
-      @results = @search_response.item_search_response[0].items[0].item
+      @results = []
+      items = @search_response.item_search_response[0].items[0].item
+      items.each { |item| @results << Product.create(item) }
     end
     
-    def size
-      results.size
+    def method_missing(method, *args)
+      return results.send(method, *args) if results.respond_to?(method)
+      super
     end
   end
 end
