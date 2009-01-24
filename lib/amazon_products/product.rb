@@ -114,9 +114,9 @@ module AmazonProducts
     attr_reader :height, :width, :url
     
     def initialize(image)
-      @height = image.height.first.to_i
-      @width = image.width.first.to_i
-      @url = image.url.first.to_s
+      @url = (image.url.first.to_s rescue nil)
+      @width = (image.width.first.to_i rescue nil)
+      @height = (image.height.first.to_i rescue nil)
     end
   end
 end
