@@ -13,7 +13,7 @@ module AmazonProducts
       request = AmazonProducts::Request.new AmazonProducts.access_key_id, nil, 'us'
       response = request.search(item_lookup, response_group)
       
-      Product.create(response.item_lookup_response.first.items.first.item.first, :any)
+      Product.create(response.item_lookup_response.first.items.first.item.first, index || :any)
     end
     
     protected

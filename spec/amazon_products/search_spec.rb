@@ -5,9 +5,9 @@ describe AmazonProducts::Search do
     @model = AmazonProducts::Search.new('Books', 'ruby programming')
   end
   
-  it 'should set index and term upon instantiation' do
+  it 'should set index and identifier upon instantiation' do
     @model.index.should == 'Books'
-    @model.term.should == 'ruby programming'
+    @model.identifier.should == 'ruby programming'
   end
   
   it 'should default to returning a medium response group size' do
