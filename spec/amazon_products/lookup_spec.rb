@@ -5,7 +5,7 @@ describe AmazonProducts::Lookup do
     @model = AmazonProducts::Lookup.new('0596516177')
   end
   
-  it 'should set index and term upon instantiation' do
+  it 'should set search_by and identifier upon instantiation' do
     @model.search_by.should == 'ASIN'
     @model.identifier.should == '0596516177'
   end
@@ -14,9 +14,15 @@ describe AmazonProducts::Lookup do
     @model.response_group_size.should == 'Medium'
   end
   
-  it 'should search for items' do
+  it 'should lookup specific items' do
     product = @model.execute
     product.title.should == 'The Ruby Programming Language'
     product.authors.should == ['David Flanagan', 'Yukihiro Matsumoto']
+  end
+  
+  it 'should lookup specific items by ISBN' do
+    model = AmazonProducts::Lookup.new('0974514055', 'ISBN', 'Books')
+    product = model.execute
+    product.title.should == "Programming Ruby: The Pragmatic Programmers' Guide, Second Edition"
   end
 end
