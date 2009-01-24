@@ -7,7 +7,7 @@ module AmazonProducts
         index, term, response_group_size, search_by
     end
     
-    def search!
+    def execute
       item_search = AmazonProducts::ItemSearch.new index, 'Title' => term
       response_group = AmazonProducts::ResponseGroup.new response_group_size
       request = AmazonProducts::Request.new AmazonProducts.access_key_id, nil, 'us'

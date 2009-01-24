@@ -26,7 +26,7 @@ describe AmazonProducts::Search do
     collection = Object.new
     AmazonProducts::SearchResultCollection.should_receive(:new).and_return(collection)
     
-    returned_collection = @model.search!
+    returned_collection = @model.execute
     returned_collection.should == collection
   end
 end

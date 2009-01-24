@@ -8,7 +8,7 @@ DefaultProductMethods = %w(asin small_image medium_image large_image)
 describe 'Books' do
   before :all do
     @search = AmazonProducts::Search.new('Books', 'ruby programming')
-    @result = @search.search!.first
+    @result = @search.execute.first
   end
   
   it 'should reflect the type of item it is' do
@@ -25,7 +25,7 @@ end
 describe 'Music' do
   before :all do
     @search = AmazonProducts::Search.new('Music', 'Jars of Clay')
-    @result = @search.search!.first
+    @result = @search.execute.first
   end
   
   it 'should reflect the type of item it is' do
@@ -42,7 +42,7 @@ end
 describe 'DVD' do
   before :all do
     @search = AmazonProducts::Search.new('DVD', 'Dynamite')
-    @result = @search.search!.first
+    @result = @search.execute.first
   end
   
   it 'should reflect the type of item it is' do
@@ -59,7 +59,7 @@ end
 describe 'VideoGame' do
   before :all do
     @search = AmazonProducts::Search.new('VideoGames', 'Mario')
-    @result = @search.search!.first
+    @result = @search.execute.first
   end
   
   it 'should reflect the type of item it is' do

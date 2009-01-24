@@ -10,7 +10,7 @@ module AmazonProducts
   class Product
     def self.create(item, search_index)
       product_group = item.item_attributes.first.product_group.to_s.gsub(' ', '')
-      search_index.match(product_group) ? AmazonProducts.const_get(product_group).new(item) : nil
+      (search_index == :any || search_index.match(product_group)) ? AmazonProducts.const_get(product_group).new(item) : nil
     end
     
     attr_reader :attribute_names
@@ -45,6 +45,11 @@ module AmazonProducts
   end
   
   class Book < Product
+    def author
+      @item_attributes.first.author.collect {|name| name.to_s}
+    end
+    alias_method :authors, :author
+    
     def format
       @item_attributes.first.format
     end
@@ -70,7 +75,7 @@ module AmazonProducts
   
   class DVD < Product
     def actors
-      actor.collect {|name| name.to_s}.join(', ')
+      actor.collect {|name| name.to_s}
     end
     
     # Returns an array of items as such:
@@ -102,6 +107,8 @@ module AmazonProducts
   VideoGames = VideoGame
   
   class Image
+    attr_reader :height, :width, :url
+    
     def initialize(image)
       @height = image.height.first.to_i
       @width = image.width.first.to_i
