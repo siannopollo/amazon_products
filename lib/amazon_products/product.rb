@@ -25,6 +25,10 @@ module AmazonProducts
       @asin ||= @item['asin'].to_s
     end
     
+    def binding
+      @binding ||= @item_attributes.first['binding'].to_s
+    end
+    
     def large_image
       @large_image ||= Image.new(@item['large_image'])
     end
