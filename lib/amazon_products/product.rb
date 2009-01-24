@@ -40,7 +40,7 @@ module AmazonProducts
     protected
       def method_missing(method, *args)
         return super unless @attribute_names.include?(method.to_s)
-        @item_attributes.first.send(method).to_s
+        @item_attributes.first[method.to_s].to_s
       end
   end
   
