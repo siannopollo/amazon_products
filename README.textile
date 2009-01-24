@@ -29,11 +29,11 @@ You can search for products like this:
   @first_result = results.first
 </pre>
 
-Then in an HTML template somewhere, assuming you wanted to use an image from one of your results
+Then in an HTML template somewhere, assuming you wanted to use an image from one of your results:
 
 <pre><img src="#{@first_result.medium_image.url}"/></pre>
 
-The individual item lookup works about the same
+The individual item lookup works about the same:
 
 <pre>
 require 'amazon_products'
