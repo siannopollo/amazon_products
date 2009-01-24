@@ -22,7 +22,7 @@ module AmazonProducts
     end
     
     def asin
-      @small_image ||= @item['asin'].to_s
+      @asin ||= @item['asin'].to_s
     end
     
     def large_image
