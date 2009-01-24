@@ -8,7 +8,17 @@ Use this library if you want to pull down information (via searches or specific 
 
 ruby-aaws gem (can be gotten from "here":http://www.caliban.org/files/ruby/ruby-aaws-0.4.4.gem)
 
+You will need an AWS "access key ID":https://aws-portal.amazon.com/gp/aws/developer/registration/index.html. The location of this will need to be configured much like what is shown below.
+
 *Usage*
+
+amazon.yml should look like this:
+
+<pre>access_key_id: your-key-here</pre>
+
+There is no default location for the config file, so you _must_ supply the location somewhere in your app like so:
+
+<pre>AmazonProducts.config_location = 'config/amazon.yml'</pre>
 
 <pre>
   require 'amazon_products'
