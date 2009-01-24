@@ -12,13 +12,15 @@ You will need an AWS "access key ID":https://aws-portal.amazon.com/gp/aws/develo
 
 *Usage*
 
-amazon.yml should look like this:
+The yaml file containing your access_key_id should look something like this:
 
 <pre>access_key_id: your-key-here</pre>
 
 There is no default location for the config file, so you _must_ supply the location somewhere in your app like so:
 
 <pre>AmazonProducts.config_location = 'config/amazon.yml'</pre>
+
+You can search for products like this:
 
 <pre>
   require 'amazon_products'
