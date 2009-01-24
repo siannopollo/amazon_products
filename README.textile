@@ -1,0 +1,31 @@
+h2. Amazon Products
+
+h3. Overview
+
+Use this library if you want to pull down information (via searches or specific product lookup) about products on Amazon.
+
+*Prerequisites*
+
+ruby-aaws gem (can be gotten from "here":http://www.caliban.org/files/ruby/ruby-aaws-0.4.4.gem)
+
+*Usage*
+
+bq. require 'amazon_products'
+search = AmazonProducts::Search.new('Books', 'knitting')
+results = search.execute
+@first_result = results.first
+
+Then in an HTML template somewhere, assuming you wanted to use an image from one of your results
+
+bq. <pre><img src="#{@first_result.medium_image.url}"/></pre>
+
+The individual item lookup works about the same
+
+bq. require 'amazon_products'
+lookup = AmazonProducts::Lookup.new('0834003503', 'ISBN')
+@result = lookup.execute
+
+
+h3. Caveats
+
+Right now there is only support for Books, DVDs, Music and VideoGames (those are all I need right now :-)
