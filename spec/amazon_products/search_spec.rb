@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe AmazonProducts::Search do
   before do
-    @model = AmazonProducts::Search.new('Books', 'ruby programming')
+    @model = AmazonProducts::Search.new('ruby programming', :index => 'Books')
   end
   
   it 'should set index and identifier upon instantiation' do

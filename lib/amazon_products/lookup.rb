@@ -1,11 +1,6 @@
 module AmazonProducts
   class Lookup
-    attr_reader :identifier, :index, :response_group_size, :search_by
-    
-    def initialize(identifier, search_by = 'ASIN', index = nil, response_group_size = 'Medium')
-      @identifier, @search_by, @index, @response_group_size =
-        identifier, search_by, index, response_group_size
-    end
+    include AmazonProducts::Retrieval
     
     def execute
       item_lookup = AmazonProducts::ItemLookup.new search_by, parameters
@@ -17,6 +12,10 @@ module AmazonProducts
     end
     
     protected
+      def default_search_by
+        'ASIN'
+      end
+      
       def parameters
         params = {'ItemId' => identifier}
         params.update('SearchIndex' => index) unless index.nil?

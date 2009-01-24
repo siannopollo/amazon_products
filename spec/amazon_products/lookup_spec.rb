@@ -21,7 +21,7 @@ describe AmazonProducts::Lookup do
   end
   
   it 'should lookup specific items by ISBN' do
-    model = AmazonProducts::Lookup.new('0974514055', 'ISBN', 'Books')
+    model = AmazonProducts::Lookup.new('0974514055', :search_by => 'ISBN', :index => 'Books')
     product = model.execute
     product.title.should == "Programming Ruby: The Pragmatic Programmers' Guide, Second Edition"
   end
