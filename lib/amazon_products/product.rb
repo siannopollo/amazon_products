@@ -19,6 +19,7 @@ module AmazonProducts
       @item = item
       @item_attributes = @item.item_attributes
       @attribute_names = @item_attributes.properties.dup
+      @attribute_names.concat %w(asin small_image medium_image large_image)
     end
     
     def asin

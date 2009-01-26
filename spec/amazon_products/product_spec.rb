@@ -3,8 +3,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 # These specs go out and touch Amazon, so an internet connection is needed to
 # run these
 
-DefaultProductMethods = %w(asin small_image medium_image large_image)
-
 describe 'Books' do
   before :all do
     @product = AmazonProducts::Lookup.new('0596516177', :index => 'Books', :search_by => 'ISBN').execute # The Ruby Programming Language
@@ -19,7 +17,7 @@ describe 'Books' do
   end
   
   it 'should respond to certain methods' do
-    @product.attribute_names.concat(DefaultProductMethods).each do |method|
+    @product.attribute_names.each do |method|
       @product.send(method).should_not be_nil
     end
   end
@@ -39,7 +37,7 @@ describe 'Music' do
   end
   
   it 'should respond to certain methods' do
-    @product.attribute_names.concat(DefaultProductMethods).each do |method|
+    @product.attribute_names.each do |method|
       @product.send(method).should_not be_nil
     end
   end
@@ -59,7 +57,7 @@ describe 'DVD' do
   end
   
   it 'should respond to certain methods' do
-    @product.attribute_names.concat(DefaultProductMethods).each do |method|
+    @product.attribute_names.each do |method|
       @product.send(method).should_not be_nil
     end
   end
@@ -75,7 +73,7 @@ describe 'VideoGame' do
   end
   
   it 'should respond to certain methods' do
-    @product.attribute_names.concat(DefaultProductMethods).each do |method|
+    @product.attribute_names.each do |method|
       @product.send(method).should_not be_nil
     end
   end
