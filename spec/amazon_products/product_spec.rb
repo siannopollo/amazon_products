@@ -15,6 +15,10 @@ describe 'Books' do
     @result.should be_kind_of(AmazonProducts::Book)
   end
   
+  it 'should have extra attribute names' do
+    @result.attribute_names.should include('authors', 'language', 'number_of_items', 'number_of_pages')
+  end
+  
   it 'should respond to certain methods' do
     @result.attribute_names.concat(DefaultProductMethods).each do |method|
       @result.send(method).should_not be_nil
@@ -32,6 +36,10 @@ describe 'Music' do
     @result.should be_kind_of(AmazonProducts::Music)
   end
   
+  it 'should have extra attribute names' do
+    @result.attribute_names.should include('number_of_discs')
+  end
+  
   it 'should respond to certain methods' do
     @result.attribute_names.concat(DefaultProductMethods).each do |method|
       @result.send(method).should_not be_nil
@@ -47,6 +55,10 @@ describe 'DVD' do
   
   it 'should reflect the type of item it is' do
     @result.should be_kind_of(AmazonProducts::DVD)
+  end
+  
+  it 'should have extra attribute names' do
+    @result.attribute_names.should include('actors', 'creators')
   end
   
   it 'should respond to certain methods' do

@@ -18,7 +18,7 @@ module AmazonProducts
     def initialize(item)
       @item = item
       @item_attributes = @item.item_attributes
-      @attribute_names = @item_attributes.properties
+      @attribute_names = @item_attributes.properties.dup
     end
     
     def asin
@@ -49,6 +49,11 @@ module AmazonProducts
   end
   
   class Book < Product
+    def initialize(item)
+      super
+      @attribute_names.concat %w(authors language number_of_items number_of_pages)
+    end
+    
     def author
       @item_attributes.first.author.collect {|name| name.to_s}
     end
@@ -72,12 +77,22 @@ module AmazonProducts
   end
   
   class Music < Product
+    def initialize(item)
+      super
+      @attribute_names.concat %w(number_of_discs)
+    end
+    
     def number_of_discs
       number_ofdiscs
     end
   end
   
   class DVD < Product
+    def initialize(item)
+      super
+      @attribute_names.concat %w(actors creators number_of_items)
+    end
+    
     def actors
       actor.collect {|name| name.to_s}
     end
