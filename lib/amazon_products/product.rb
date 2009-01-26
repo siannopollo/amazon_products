@@ -22,7 +22,7 @@ module AmazonProducts
     end
     
     def asin
-      @asin ||= @item['asin'].to_s
+      @asin ||= @item.asin.to_s
     end
     
     def binding
@@ -30,15 +30,15 @@ module AmazonProducts
     end
     
     def large_image
-      @large_image ||= Image.new(@item['large_image'])
+      @large_image ||= Image.new(@item.large_image)
     end
     
     def medium_image
-      @medium_image ||= Image.new(@item['medium_image'])
+      @medium_image ||= Image.new(@item.medium_image)
     end
     
     def small_image
-      @small_image ||= Image.new(@item['small_image'])
+      @small_image ||= Image.new(@item.small_image)
     end
     
     protected
@@ -97,7 +97,7 @@ module AmazonProducts
     end
     
     def actors
-      actor.collect {|name| name.to_s}
+      @item_attributes.first.actor.collect {|name| name.to_s}
     end
     
     # Returns an array of items as such:
