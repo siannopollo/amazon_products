@@ -116,7 +116,7 @@ module AmazonProducts
       @item_attributes.first.format.collect {|f| f.to_s}
     end
     
-    # This is also a pretty crazy attribute, so this will just be passed
+    # This is a pretty crazy attribute, so this will just be passed
     # through to do with what you wish
     def languages
       @item_attributes.first.languages
@@ -124,6 +124,13 @@ module AmazonProducts
     
     def number_of_items
       number_ofitems
+    end
+    
+    # Returns a string, like "92 minutes"
+    # 
+    def running_time
+      rt = @item_attributes.first.running_time.first
+      "#{rt.to_s} #{rt.attrib['units']}"
     end
   end
   
