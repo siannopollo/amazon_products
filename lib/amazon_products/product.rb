@@ -13,8 +13,6 @@ module AmazonProducts
       (search_index == :any || search_index.match(product_group)) ? AmazonProducts.const_get(product_group).new(item) : nil
     end
     
-    attr_reader :attribute_names
-    
     def initialize(item)
       @item = item
       @item_attributes = @item.item_attributes
@@ -24,6 +22,10 @@ module AmazonProducts
     
     def asin
       @asin ||= @item.asin.to_s
+    end
+    
+    def attribute_names
+      @attribute_names.sort
     end
     
     def binding
