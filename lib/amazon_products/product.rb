@@ -41,6 +41,10 @@ module AmazonProducts
       @small_image ||= Image.new(@item.small_image)
     end
     
+    def package_dimensions
+      @package_dimensions ||= PackageDimensions.new(@item_attributes.first.package_dimensions.first)
+    end
+    
     protected
       def method_missing(method, *args)
         return super unless @attribute_names.include?(method.to_s)
@@ -144,6 +148,74 @@ module AmazonProducts
       @url = (image.url.first.to_s rescue nil)
       @width = (image.width.first.to_i rescue nil)
       @height = (image.height.first.to_i rescue nil)
+    end
+  end
+  
+  class PackageDimensions
+    def initialize(dimensions)
+      @length = dimensions.length.first
+      @width  = dimensions.width.first
+      @height = dimensions.height.first
+      @weight = dimensions.weight.first
+      
+      @length_units = @length.attrib['units']
+      @width_units  = @width.attrib['units']
+      @height_units = @height.attrib['units']
+      @weight_units = @weight.attrib['units']
+    end
+    
+    def length
+      @real_length ||= Dimension.new(@length, @length_units)
+    end
+    
+    def width
+      @real_width ||= Dimension.new(@width, @width_units)
+    end
+    
+    def height
+      @real_height ||= Dimension.new(@height, @height_units)
+    end
+    
+    def weight
+      @real_weight ||= Dimension.new(@weight, @weight_units)
+    end
+    
+    def to_s
+      if [length.units, width.units, height.units].uniq == [length.units]
+        values, extra = [length.value, width.value, height.value], " #{length.units}"
+      else
+        values, extra = [length, width, height], ''
+      end
+      
+      "#{values.collect {|v| v.to_s}.join(' x ')}#{extra}; #{weight.to_s}"
+    end
+  end
+  
+  class Dimension
+    def initialize(value, total_units)
+      @value, @total_units = value, total_units
+    end
+    
+    def decimal_place
+      @total_units.split('-').first
+    end
+    
+    def multiplier
+      case decimal_place
+      when 'hundredths' then 0.01
+      end
+    end
+    
+    def units
+      @total_units.split('-').last
+    end
+    
+    def value
+      @value.to_i * multiplier
+    end
+    
+    def to_s
+      "#{value} #{units}"
     end
   end
 end
