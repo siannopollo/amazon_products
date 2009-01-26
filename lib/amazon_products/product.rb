@@ -59,8 +59,11 @@ module AmazonProducts
     end
     alias_method :authors, :author
     
+    # Returns either nil, or a format (such as 'Illustrated', or 'Hardcover')
+    # 
     def format
-      @item_attributes.first.format
+      f = @item_attributes.first.format
+      f.to_s unless f.nil?
     end
     
     def language
@@ -105,10 +108,12 @@ module AmazonProducts
       @item_attributes.first.creator.inject([]) {|m,c| m << {c.attrib['role'] => c.to_s}}
     end
     
-    # This is a pretty crazy attribute, so this will just be passed through to
-    # do with what you wish
+    # Returns an array of all the formats as such:
+    # 
+    #   ["AC-3", "Box set", "Color", "Dolby", "Dubbed", "DVD-Video", "Subtitled", "Widescreen", "NTSC"]
+    # 
     def format
-      @item_attributes.first.format
+      @item_attributes.first.format.collect {|f| f.to_s}
     end
     
     # This is also a pretty crazy attribute, so this will just be passed
