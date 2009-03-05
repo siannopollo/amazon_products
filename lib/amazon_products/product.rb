@@ -141,7 +141,13 @@ module AmazonProducts
     end
   end
   
-  class VideoGame < Product; end
+  class VideoGame < Product
+    # Returns an array of sentences describing the game.
+    #
+    def feature
+      @item_attributes.feature.collect {|f| f.to_s}
+    end
+  end
   VideoGames = VideoGame
   
   class Image
@@ -151,12 +157,6 @@ module AmazonProducts
       @url = (image.url.first.to_s rescue nil)
       @width = (image.width.first.to_i rescue nil)
       @height = (image.height.first.to_i rescue nil)
-    end
-    
-    # Returns an array of sentences describing the game.
-    #
-    def feature
-      @item_attributes.first.feature
     end
   end
   

@@ -77,6 +77,13 @@ describe 'VideoGame' do
       @product.send(method).should_not be_nil
     end
   end
+  
+  it 'should return an array of sentences for feature' do
+    @product.feature.should be_a_kind_of(Array)
+    @product.feature.each do |f|
+      f.should be_a_kind_of(String)
+    end
+  end
 end
 
 describe 'PackageDimensions' do
