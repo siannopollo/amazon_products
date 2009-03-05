@@ -152,6 +152,12 @@ module AmazonProducts
       @width = (image.width.first.to_i rescue nil)
       @height = (image.height.first.to_i rescue nil)
     end
+    
+    # Returns an array of sentences describing the game.
+    #
+    def feature
+      @item_attributes.first.feature
+    end
   end
   
   class PackageDimensions
