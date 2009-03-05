@@ -142,10 +142,19 @@ module AmazonProducts
   end
   
   class VideoGame < Product
+    def initialize(item)
+      super
+      @attribute_names.concat %w(number_of_discs)
+    end
+    
     # Returns an array of sentences describing the game.
     #
     def feature
       @item_attributes.feature.collect {|f| f.to_s}
+    end
+    
+    def number_of_discs
+      number_ofdiscs
     end
   end
   VideoGames = VideoGame
