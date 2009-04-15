@@ -6,7 +6,7 @@ Use this library if you want to pull down information (via searches or specific 
 
 *Prerequisites*
 
-ruby-aaws gem (can be gotten from "here":http://www.caliban.org/files/ruby/ruby-aaws-0.4.4.gem)
+ruby-aaws gem (sudo gem install ruby-aaws)
 
 You will need an AWS "access key ID":https://aws-portal.amazon.com/gp/aws/developer/registration/index.html. The location of this will need to be configured much like what is shown below.
 
