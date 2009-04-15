@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'amazon/aws'
 require 'amazon/aws/search'
 require 'yaml'

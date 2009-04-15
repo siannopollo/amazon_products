@@ -154,7 +154,7 @@ module AmazonProducts
     end
     
     def number_of_discs
-      number_ofdiscs
+      respond_to?(:number_ofdiscs) ? number_ofdiscs : 0
     end
   end
   VideoGames = VideoGame
