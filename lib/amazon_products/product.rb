@@ -32,6 +32,17 @@ module AmazonProducts
       @binding ||= @item_attributes.first['binding'].to_s
     end
     
+    # Returns an array of all languages as such:
+    # 
+    #   ["English", "Spanish", "Swahili"]
+    # 
+    def languages
+      @item_attributes.first.languages.first.language.inject([]) do |m, l|
+        m << (l.send('name').to_s rescue nil)
+        m
+      end.compact.uniq
+    end
+    
     def large_image
       @large_image ||= Image.new(@item.large_image)
     end
@@ -58,7 +69,8 @@ module AmazonProducts
   class Book < Product
     def initialize(item)
       super
-      @attribute_names.concat %w(authors language number_of_items number_of_pages)
+      @attribute_names.concat %w(authors number_of_items number_of_pages)
+      %w(author number_ofitems number_ofpages).each {|a| @attribute_names.delete a}
     end
     
     def author
@@ -73,16 +85,12 @@ module AmazonProducts
       f.to_s unless f.nil?
     end
     
-    def language
-      @item_attributes.languages.language.first.name.to_s
-    end
-    
     def number_of_items
-      number_ofitems
+      @item_attributes.first.number_ofitems.to_i
     end
     
     def number_of_pages
-      number_ofpages
+      @item_attributes.first.number_ofpages.to_i
     end
   end
   
@@ -90,10 +98,11 @@ module AmazonProducts
     def initialize(item)
       super
       @attribute_names.concat %w(number_of_discs)
+      @attribute_names.delete 'number_ofdiscs'
     end
     
     def number_of_discs
-      number_ofdiscs
+      @item_attributes.first.number_ofdiscs.to_i
     end
   end
   
@@ -101,6 +110,7 @@ module AmazonProducts
     def initialize(item)
       super
       @attribute_names.concat %w(actors creators number_of_items)
+      %w(creator actor number_ofitems).each {|a| @attribute_names.delete a}
     end
     
     def actors
@@ -123,14 +133,8 @@ module AmazonProducts
       @item_attributes.first.format.collect {|f| f.to_s}
     end
     
-    # This is a pretty crazy attribute, so this will just be passed
-    # through to do with what you wish
-    def languages
-      @item_attributes.first.languages
-    end
-    
     def number_of_items
-      number_ofitems
+      @item_attributes.first.number_ofitems.to_i
     end
     
     # Returns a string, like "92 minutes"
@@ -145,6 +149,7 @@ module AmazonProducts
     def initialize(item)
       super
       @attribute_names.concat %w(number_of_discs)
+      @attribute_names.delete 'number_ofdiscs'
     end
     
     # Returns an array of sentences describing the game.
@@ -154,7 +159,7 @@ module AmazonProducts
     end
     
     def number_of_discs
-      respond_to?(:number_ofdiscs) ? number_ofdiscs : 0
+      respond_to?(:number_ofdiscs) ? @item_attributes.first.number_ofdiscs.to_i : 0
     end
   end
   VideoGames = VideoGame
@@ -171,15 +176,20 @@ module AmazonProducts
   
   class PackageDimensions
     def initialize(dimensions)
-      @length = dimensions.length.first
-      @width  = dimensions.width.first
-      @height = dimensions.height.first
-      @weight = dimensions.weight.first
+      length = dimensions.length.first
+      width  = dimensions.width.first
+      height = dimensions.height.first
+      weight = dimensions.weight.first
       
-      @length_units = @length.attrib['units']
-      @width_units  = @width.attrib['units']
-      @height_units = @height.attrib['units']
-      @weight_units = @weight.attrib['units']
+      @length_units = length.attrib['units']
+      @width_units  = width.attrib['units']
+      @height_units = height.attrib['units']
+      @weight_units = weight.attrib['units']
+      
+      @length = length.to_i
+      @width  = width.to_i
+      @height = height.to_i
+      @weight = weight.to_i
     end
     
     def length
